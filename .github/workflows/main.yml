@@ -46,7 +46,7 @@ jobs:
         run: |
             docker login ghcr.io -u ${{ github.actor }} -p ${{secrets.GHCR_TOKEN }}
             docker buildx create --name arm64builder --use
-            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/yeoulcho/kdt1-study-3-team4-back:latest --push .
+            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/iknowca/personal-project-backend:latest --push .
             docker logout
      
   deploy:
@@ -71,7 +71,7 @@ jobs:
           script: |
             pwd
             ls -al
-            cd actions-runner
+            cd spring-actions-runner
             pwd
             if [[ "$(docker ps -q --filter ancestor=mysql:8.0)" ]]; then
               docker rm -f $(docker ps -qa --filter ancestor=mysql:8.0)
