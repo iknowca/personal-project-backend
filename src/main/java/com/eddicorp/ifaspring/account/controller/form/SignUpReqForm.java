@@ -1,0 +1,18 @@
+package com.eddicorp.ifaspring.account.controller.form;
+
+import com.eddicorp.ifaspring.account.entity.Account;
+import lombok.Getter;
+
+public class SignUpReqForm {
+
+    @Getter
+    private String email;
+    @Getter
+    private String password;
+    @Getter
+    private String nickName;
+
+    public Account toAccount() {
+        return new Account(email, password, nickName);
+    }
+}
