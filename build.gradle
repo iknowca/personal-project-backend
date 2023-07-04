@@ -10,6 +10,9 @@ version = '0.0.1-SNAPSHOT'
 java {
 	sourceCompatibility = '17'
 }
+tasks.named("jar"){
+	enabled = false
+}
 
 configurations {
 	compileOnly {
@@ -32,7 +35,4 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-task.named("jar") {
-	enable = false
 }
