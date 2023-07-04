@@ -1,5 +1,6 @@
 package com.eddicorp.ifaspring.account.controller;
 
+import com.eddicorp.ifaspring.account.controller.form.LoginReqForm;
 import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.account.controller.form.SignUpReqForm;
 import com.eddicorp.ifaspring.account.service.AccountService;
@@ -21,5 +22,11 @@ public class AccountController {
     public LoginResForm signUp(@RequestBody SignUpReqForm reqForm) {
         log.info("signUp");
         return accountService.signUp(reqForm);
+    }
+
+    @PostMapping("/log-in")
+    public LoginResForm logIn(@RequestBody LoginReqForm reqForm) {
+        log.info("login");
+        return accountService.logIn(reqForm);
     }
 }
