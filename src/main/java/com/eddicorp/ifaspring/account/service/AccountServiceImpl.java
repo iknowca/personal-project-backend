@@ -50,7 +50,21 @@ public class AccountServiceImpl implements AccountService{
             return null;
         }
         String userToken = userTokenRepository.setUserToken(savedAccount.getId());
-        log.info("userToken: " , userToken);
         return new LoginResForm(userToken);
+    }
+
+    @Override
+    public Account findByUserToken(String userToken) {
+        Long userId = userTokenRepository.findByUserToken(userToken);
+        if(userId==null) {
+            log.info("no account has received userToken");
+            return null;
+        }
+        Optional<Account> maybeAccount = accountRepository.findById(userId);
+        if(maybeAccount.isEmpty()) {
+            log.info("no account has fined userId");
+            return null;
+        }
+        return maybeAccount.get();
     }
 }
