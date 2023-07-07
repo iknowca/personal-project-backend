@@ -1,12 +1,14 @@
 package com.eddicorp.ifaspring.account.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.eddicorp.ifaspring.board.entity.Board;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @NoArgsConstructor
@@ -16,8 +18,10 @@ public class Account {
     @Getter
     private Long id;
     @Getter
+    @JsonIgnore
     private String email;
     @Getter
+    @JsonIgnore
     private String password;
     @Getter
     private String nickName;

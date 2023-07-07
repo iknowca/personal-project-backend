@@ -21,11 +21,10 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @JsonIgnore
     @ManyToOne(fetch=FetchType.LAZY)
     private Account writer;
-    @JsonIgnore
     @OneToOne(fetch=FetchType.LAZY)
+    @JsonIgnore
     private BoardContent content;
     @CreationTimestamp
     private LocalDateTime createdDate;
