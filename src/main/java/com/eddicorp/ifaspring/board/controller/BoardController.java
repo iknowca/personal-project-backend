@@ -5,10 +5,8 @@ import com.eddicorp.ifaspring.board.controller.form.BoardResForm;
 import com.eddicorp.ifaspring.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,5 +18,10 @@ public class BoardController {
     public Long write(@RequestBody BoardReqForm reqForm) {
         log.info("write()");
         return boardService.write(reqForm);
+    }
+    @GetMapping("/board/{boardId}")
+    public BoardResForm requestBoard(@PathVariable Long boardId) {
+        log.info("requestBoard: "+boardId);
+        return boardService.requestBoard(boardId);
     }
 }

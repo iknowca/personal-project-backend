@@ -1,6 +1,7 @@
 package com.eddicorp.ifaspring.board.entity;
 
 import com.eddicorp.ifaspring.account.entity.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,8 +21,10 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @JsonIgnore
     @ManyToOne(fetch=FetchType.LAZY)
     private Account writer;
+    @JsonIgnore
     @OneToOne(fetch=FetchType.LAZY)
     private BoardContent content;
     @CreationTimestamp

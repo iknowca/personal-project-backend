@@ -8,10 +8,12 @@ import com.eddicorp.ifaspring.board.entity.Board;
 import com.eddicorp.ifaspring.board.entity.BoardContent;
 import com.eddicorp.ifaspring.board.repository.BoardContentRepository;
 import com.eddicorp.ifaspring.board.repository.BoardRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +38,23 @@ public class BoardServiceImpl implements BoardService{
                 .build();
 
         return boardRepository.save(board).getId();
+    }
+
+    @Override
+    @Transactional
+    public BoardResForm requestBoard(Long boardId) {
+        Optional<Board> maybeBoard = boardRepository.findById(boardId);
+        if(maybeBoard.isEmpty()) {
+            return null;
+        }
+        Board savedBoared = maybeBoard.get();
+        BoardResForm resForm = new BoardResForm()
+                .builder()
+                .board(savedBoared)
+                .writerId(savedBoared.getWriter().getId())
+                .writerName(savedBoared.getWriter().getNickName())
+                .boardContent(savedBoared.getContent().getStringContent())
+                .build();
+        return resForm;
     }
 }
