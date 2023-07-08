@@ -9,20 +9,18 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
+@ToString
 @NoArgsConstructor
 public class BoardResForm {
     private Board board;
-    private String writerName;
-    private Long writerId;
     private String boardContent;
 
     @Builder
-    public BoardResForm(Board board, Long writerId, String writerName, String boardContent) {
+    public BoardResForm(Board board, String boardContent) {
         this.board = board;
-        this.writerId = writerId;
-        this.writerName = writerName;
         this.boardContent = boardContent;
     }
 }

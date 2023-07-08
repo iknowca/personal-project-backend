@@ -17,12 +17,12 @@ import java.util.List;
 @RestController
 public class BoardController {
     final BoardService boardService;
-    @PutMapping("/board")
+    @PostMapping
     public Long write(@RequestBody BoardReqForm reqForm) {
         log.info("write()");
         return boardService.write(reqForm);
     }
-    @GetMapping("/board/{boardId}")
+    @GetMapping("/{boardId}")
     public BoardResForm requestBoard(@PathVariable Long boardId) {
         log.info("requestBoard: "+boardId);
         return boardService.requestBoard(boardId);
