@@ -16,10 +16,10 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BoardResForm {
     private Board board;
-    private String boardContent;
+    private BoardContent boardContent;
 
     @Builder
-    public BoardResForm(Board board, String boardContent) {
+    public BoardResForm(Board board, BoardContent boardContent) {
         this.board = board;
         this.boardContent = boardContent;
     }

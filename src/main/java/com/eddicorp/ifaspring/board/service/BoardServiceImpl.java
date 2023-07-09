@@ -44,23 +44,18 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public BoardResForm requestBoard(Long boardId) {
-        Optional<Board> maybeBoard = boardRepository.findBoardById(boardId);
+        Optional<Board> maybeBoard = boardRepository.findBoardByIdWithContent(boardId);
         if(maybeBoard.isEmpty()) {
             return null;
         }
         Board savedBoard = maybeBoard.get();
         new BoardResForm();
-        BoardResForm resForm = BoardResForm
-                .builder()
-                .board(savedBoard)
-                .boardContent(savedBoard.getContent().getStringContent())
-                .build();
+        BoardResForm resForm = new BoardResForm(savedBoard, savedBoard.getContent());
         log.info(String.valueOf(resForm));
         return resForm;
     }
 
     @Override
-    @Transactional
     public List<Board> requestBoardList() {
         List<Board> boardList = boardRepository.findAllWithWriter();
         return boardList;
