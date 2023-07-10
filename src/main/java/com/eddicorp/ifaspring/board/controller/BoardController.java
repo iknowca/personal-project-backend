@@ -6,8 +6,10 @@ import com.eddicorp.ifaspring.board.entity.Board;
 import com.eddicorp.ifaspring.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class BoardController {
     @PostMapping
     public Long write(@RequestBody BoardReqForm reqForm) {
         log.info("write()");
+        log.info(reqForm.getFiles().toString());
         return boardService.write(reqForm);
     }
     @GetMapping("/{boardId}")

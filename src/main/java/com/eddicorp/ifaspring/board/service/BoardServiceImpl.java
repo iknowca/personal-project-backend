@@ -6,6 +6,7 @@ import com.eddicorp.ifaspring.board.controller.form.BoardReqForm;
 import com.eddicorp.ifaspring.board.controller.form.BoardResForm;
 import com.eddicorp.ifaspring.board.entity.Board;
 import com.eddicorp.ifaspring.board.entity.BoardContent;
+import com.eddicorp.ifaspring.board.entity.ImgPath;
 import com.eddicorp.ifaspring.board.repository.BoardContentRepository;
 import com.eddicorp.ifaspring.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,9 @@ public class BoardServiceImpl implements BoardService{
         if(writer==null) {
             return null;
         }
-        BoardContent boardContent = new BoardContent(reqForm.getStringContent());
+        BoardContent boardContent = new BoardContent(reqForm.getStringContent(), reqForm.getFiles().stream()
+                .map(ImgPath::new)
+                .toList());
         boardContentRepository.save(boardContent);
         Board board = Board.builder()
                 .title(reqForm.getTitle())
