@@ -9,11 +9,13 @@ import com.eddicorp.ifaspring.board.entity.BoardContent;
 import com.eddicorp.ifaspring.board.entity.ImgPath;
 import com.eddicorp.ifaspring.board.repository.BoardContentRepository;
 import com.eddicorp.ifaspring.board.repository.BoardRepository;
+import com.eddicorp.ifaspring.board.repository.ImgPathRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,16 +26,17 @@ public class BoardServiceImpl implements BoardService{
     final AccountService accountService;
     final BoardRepository boardRepository;
     final BoardContentRepository boardContentRepository;
+    final ImgPathRepository imgPathRepository;
 
     @Override
+    @Transactional
     public Long write(BoardReqForm reqForm) {
         Account writer = accountService.findByUserToken(reqForm.getUserToken());
         if(writer==null) {
             return null;
         }
-        BoardContent boardContent = new BoardContent(reqForm.getStringContent(), reqForm.getFiles().stream()
-                .map(ImgPath::new)
-                .toList());
+        List<ImgPath> imgPathList = new ArrayList<>(reqForm.getFiles().stream().map(ImgPath::new).map(imgPathRepository::save).toList());
+        BoardContent boardContent = new BoardContent(reqForm.getStringContent(), imgPathList);
         boardContentRepository.save(boardContent);
         Board board = Board.builder()
                 .title(reqForm.getTitle())
@@ -52,9 +55,10 @@ public class BoardServiceImpl implements BoardService{
             return null;
         }
         Board savedBoard = maybeBoard.get();
-        new BoardResForm();
-        BoardResForm resForm = new BoardResForm(savedBoard, savedBoard.getContent());
-        log.info(String.valueOf(resForm));
+        BoardContent boardContent = savedBoard.getContent();
+        List<Long> imgPathList = boardContent.getImgPathList().stream().map((imgPath)->imgPath.getId()).toList();
+        BoardResForm resForm = new BoardResForm(savedBoard, boardContent);
+        log.info(String.valueOf(imgPathList));
         return resForm;
     }
 

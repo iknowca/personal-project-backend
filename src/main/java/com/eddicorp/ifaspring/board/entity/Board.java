@@ -23,7 +23,7 @@ public class Board {
     private String title;
     @ManyToOne(fetch=FetchType.LAZY)
     private Account writer;
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonIgnore
     private BoardContent content;
     @CreationTimestamp
