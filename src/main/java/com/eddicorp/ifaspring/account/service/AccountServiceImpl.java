@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService{
         Account createdAccount = reqForm.toAccount();
         accountRepository.save(createdAccount);
         String userToken = userTokenRepository.setUserToken(createdAccount.getId());
-        return new LoginResForm(userToken, createdAccount.getNickName());
+        return new LoginResForm(userToken, createdAccount.getNickName(), createdAccount.getId());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AccountServiceImpl implements AccountService{
             return null;
         }
         String userToken = userTokenRepository.setUserToken(savedAccount.getId());
-        return new LoginResForm(userToken, savedAccount.getNickName());
+        return new LoginResForm(userToken, savedAccount.getNickName(), savedAccount.getId());
     }
 
     @Override
