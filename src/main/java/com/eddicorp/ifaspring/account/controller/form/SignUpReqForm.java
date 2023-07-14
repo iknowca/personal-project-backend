@@ -1,8 +1,10 @@
 package com.eddicorp.ifaspring.account.controller.form;
 
 import com.eddicorp.ifaspring.account.entity.Account;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 public class SignUpReqForm {
 
     @Getter

@@ -58,7 +58,6 @@ public class BoardServiceImpl implements BoardService{
         BoardContent boardContent = savedBoard.getContent();
         List<Long> imgPathList = boardContent.getImgPathList().stream().map((imgPath)->imgPath.getId()).toList();
         BoardResForm resForm = new BoardResForm(savedBoard, boardContent);
-        log.info(String.valueOf(imgPathList));
         return resForm;
     }
 
