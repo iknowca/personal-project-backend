@@ -12,4 +12,6 @@ public interface BoardService {
     BoardResForm requestBoard(Long boardId);
 
     List<Board> requestBoardList();
+
+    Long modify(BoardReqForm reqForm);
 }

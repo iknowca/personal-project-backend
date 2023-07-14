@@ -6,6 +6,7 @@ import java.util.List;
 
 @Getter
 public class BoardReqForm {
+    private Long boardId;
     private String userToken;
     private String title;
     private String stringContent;

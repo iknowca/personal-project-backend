@@ -3,12 +3,14 @@ package com.eddicorp.ifaspring.board.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Setter
 public class BoardContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

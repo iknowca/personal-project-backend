@@ -66,4 +66,29 @@ public class BoardServiceImpl implements BoardService{
         List<Board> boardList = boardRepository.findAllWithWriter();
         return boardList;
     }
+
+    @Override
+    @Transactional
+    public Long modify(BoardReqForm reqForm) {
+        Account writer = accountService.findByUserToken(reqForm.getUserToken());
+        if(writer==null) {
+            return null;
+        }
+        Optional<Board> maybeBoard = boardRepository.findById(reqForm.getBoardId());
+        if(maybeBoard.isEmpty()) {
+            return null;
+        }
+        Board savedBoard = maybeBoard.get();
+        BoardContent savedBoardContent = savedBoard.getContent();
+//        List<ImgPath> imgPathList = savedBoardContent.getImgPathList();
+
+        savedBoard.setTitle(reqForm.getTitle());
+        savedBoardContent.setStringContent(reqForm.getStringContent());
+
+//        imgPathList = reqForm.getFiles().stream().map(ImgPath::new).map(imgPathRepository::save).toList();
+//        savedBoardContent.setImgPathList(imgPathList);
+        boardContentRepository.save(savedBoardContent);
+
+        return boardRepository.save(savedBoard).getId();
+    }
 }

@@ -36,4 +36,10 @@ public class BoardController {
         log.info("requestBoardList");
         return boardService.requestBoardList();
     }
+
+    @PutMapping
+    public Long modify(@RequestBody BoardReqForm reqForm) {
+        log.info("modify()");
+        return boardService.modify(reqForm);
+    }
 }
