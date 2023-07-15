@@ -16,17 +16,4 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 public class AccountController {
-    final AccountService accountService;
-
-    @PostMapping("/sign-up")
-    public LoginResForm signUp(@RequestBody SignUpReqForm reqForm) {
-        log.info("signUp");
-        return accountService.signUp(reqForm);
-    }
-
-    @PostMapping("/log-in")
-    public LoginResForm logIn(@RequestBody LoginReqForm reqForm) {
-        log.info("login");
-        return accountService.logIn(reqForm);
-    }
 }

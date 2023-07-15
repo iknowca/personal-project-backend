@@ -6,9 +6,9 @@ import com.eddicorp.ifaspring.account.controller.form.SignUpReqForm;
 import com.eddicorp.ifaspring.account.entity.Account;
 
 public interface AccountService {
-    LoginResForm signUp(SignUpReqForm reqForm);
-
-    LoginResForm logIn(LoginReqForm reqForm);
 
     Account findByUserToken(String userToken);
+    LoginResForm loginOauthUser(Long platformId, String platformName);
+
+    Account joinOauthUser(Long platformId, String platformName);
 }

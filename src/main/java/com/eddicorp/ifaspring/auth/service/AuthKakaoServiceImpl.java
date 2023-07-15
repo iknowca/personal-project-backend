@@ -1,5 +1,6 @@
 package com.eddicorp.ifaspring.auth.service;
 
+import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.account.service.AccountService;
 import com.eddicorp.ifaspring.auth.dto.KakaoProfile;
 import com.eddicorp.ifaspring.auth.dto.OAuthToken;
@@ -31,7 +32,7 @@ public class AuthKakaoServiceImpl implements AuthKakaoService{
     }
 
     @Override
-    public String getToken(String code) {
+    public LoginResForm getToken(String code) {
         final String url = "https://kauth.kakao.com/oauth/token";
 
 
@@ -51,13 +52,13 @@ public class AuthKakaoServiceImpl implements AuthKakaoService{
 
         ResponseEntity<OAuthToken> response = restTemplate.exchange(url, HttpMethod.POST, kakaoTokenRequest, OAuthToken.class);
 
-        Long userId = getUserInfo(Objects.requireNonNull(response.getBody()).getAccess_token());
+        LoginResForm resForm = getUserInfo(Objects.requireNonNull(response.getBody()).getAccess_token());
 
-        return response.getBody().getAccess_token();
+        return resForm;
     }
 
     @Override
-    public Long getUserInfo(String accessToken){
+    public LoginResForm getUserInfo(String accessToken){
         final String URL = "https://kapi.kakao.com/v2/user/me";
         RestTemplate restTemplate = new RestTemplate();
 
@@ -67,7 +68,9 @@ public class AuthKakaoServiceImpl implements AuthKakaoService{
 
         HttpEntity<HttpHeaders> kakaoUserInfoRequest = new HttpEntity<>(headers);
         ResponseEntity<KakaoProfile> kakaoUserInfoResponse = restTemplate.exchange(URL, HttpMethod.POST, kakaoUserInfoRequest, KakaoProfile.class);
-        return Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getId();
+
+        Long kakaoUserId = Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getId();
+        return accountService.loginOauthUser(kakaoUserId, "kakao");
     }
 
 

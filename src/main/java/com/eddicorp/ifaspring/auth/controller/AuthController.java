@@ -1,5 +1,6 @@
 package com.eddicorp.ifaspring.auth.controller;
 
+import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.auth.service.AuthKakaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class AuthController {
         return kakaoService.getAuthorizeCode();
     }
     @GetMapping("/kakao/oauth-code")
-    public String getToken(@RequestParam String code) {
+    public LoginResForm getToken(@RequestParam String code) {
         log.info("kakao getToken()");
         return kakaoService.getToken(code);
     }
