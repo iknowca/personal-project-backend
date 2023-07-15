@@ -1,7 +1,6 @@
 package com.eddicorp.ifaspring.account.service;
 
 import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
-import com.eddicorp.ifaspring.account.controller.form.SignUpReqForm;
 import com.eddicorp.ifaspring.account.entity.Account;
 import com.eddicorp.ifaspring.account.repository.AccountRepository;
 import com.eddicorp.ifaspring.account.repository.UserTokenRepository;
@@ -33,17 +32,17 @@ public class AccountServiceImpl implements AccountService{
         return maybeAccount.get();
     }
     @Override
-    public LoginResForm loginOauthUser(Long platformId, String platformName) {
+    public LoginResForm loginOauthUser(Long platformId, String platformName, String profileImage) {
         Optional<Account> maybeAccount = accountRepository.findByOauthId(platformId, "kakao");
 
-        Account savedAccount = maybeAccount.orElseGet(() -> joinOauthUser(platformId, platformName));
+        Account savedAccount = maybeAccount.orElseGet(() -> joinOauthUser(platformId, platformName, profileImage));
         String userToken = userTokenRepository.setUserToken(savedAccount.getId());
         return new LoginResForm(userToken, savedAccount.getNickName(), savedAccount.getId());
     }
 
     @Override
-    public Account joinOauthUser(Long platformId, String platformName) {
-        Account newAccount =  new Account(platformId, platformName);
+    public Account joinOauthUser(Long platformId, String platformName, String profileImage) {
+        Account newAccount =  new Account(platformId, platformName, profileImage);
         return accountRepository.save(newAccount);
     }
 }

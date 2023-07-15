@@ -8,7 +8,6 @@ import com.eddicorp.ifaspring.account.entity.Account;
 public interface AccountService {
 
     Account findByUserToken(String userToken);
-    LoginResForm loginOauthUser(Long platformId, String platformName);
-
-    Account joinOauthUser(Long platformId, String platformName);
+    LoginResForm loginOauthUser(Long platformId, String platformName, String profileImage);
+    Account joinOauthUser(Long platformId, String platformName, String profileImage);
 }

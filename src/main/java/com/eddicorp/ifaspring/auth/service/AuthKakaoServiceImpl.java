@@ -68,9 +68,9 @@ public class AuthKakaoServiceImpl implements AuthKakaoService{
 
         HttpEntity<HttpHeaders> kakaoUserInfoRequest = new HttpEntity<>(headers);
         ResponseEntity<KakaoProfile> kakaoUserInfoResponse = restTemplate.exchange(URL, HttpMethod.POST, kakaoUserInfoRequest, KakaoProfile.class);
-
         Long kakaoUserId = Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getId();
-        return accountService.loginOauthUser(kakaoUserId, "kakao");
+        String profileImage = Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getProperties().getProfile_image();
+        return accountService.loginOauthUser(kakaoUserId, "kakao", profileImage);
     }
 
 

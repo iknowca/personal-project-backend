@@ -23,9 +23,11 @@ public class Account {
     private String nickName;
     private Long oauthId;
     private String oauthPlatform;
+    private String profileImage;
 
-    public Account(Long oauthId, String oauthPlatform) {
+    public Account(Long oauthId, String oauthPlatform, String profileImage) {
         this.oauthId = oauthId;
         this.oauthPlatform = oauthPlatform;
+        this.profileImage = profileImage;
     }
 }
