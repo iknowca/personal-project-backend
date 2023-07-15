@@ -13,8 +13,4 @@ public class SignUpReqForm {
     private String password;
     @Getter
     private String nickName;
-
-    public Account toAccount() {
-        return new Account(email, password, nickName);
-    }
 }

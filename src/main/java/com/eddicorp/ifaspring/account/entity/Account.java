@@ -12,23 +12,20 @@ import java.util.Map;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Account {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long id;
-    @Getter
     @JsonIgnore
     private String email;
-    @Getter
-    @JsonIgnore
-    private String password;
-    @Getter
     private String nickName;
+    private Long oauthId;
+    private String oauthPlatform;
 
-    public Account(String email, String password, String nickName) {
-        this.email = email;
-        this.password = password;
-        this.nickName = nickName;
+    public Account(Long oauthId, String oauthPlatform) {
+        this.oauthId = oauthId;
+        this.oauthPlatform = oauthPlatform;
     }
 }

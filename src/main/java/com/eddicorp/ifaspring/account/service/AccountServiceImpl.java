@@ -1,6 +1,5 @@
 package com.eddicorp.ifaspring.account.service;
 
-import com.eddicorp.ifaspring.account.controller.form.LoginReqForm;
 import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.account.controller.form.SignUpReqForm;
 import com.eddicorp.ifaspring.account.entity.Account;
@@ -18,40 +17,6 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService{
     final AccountRepository accountRepository;
     final UserTokenRepository userTokenRepository;
-    @Override
-    public LoginResForm signUp(SignUpReqForm reqForm) {
-        Optional<Account> maybeAccount = accountRepository.findByEmail(reqForm.getEmail());
-        if(maybeAccount.isPresent()) {
-            log.info("duplicate email");
-            return null;
-        }
-        maybeAccount = accountRepository.findByNickName(reqForm.getNickName());
-        if(maybeAccount.isPresent()) {
-            log.info("duplicate nickName");
-            return null;
-        }
-        Account createdAccount = reqForm.toAccount();
-        accountRepository.save(createdAccount);
-        String userToken = userTokenRepository.setUserToken(createdAccount.getId());
-        return new LoginResForm(userToken, createdAccount.getNickName(), createdAccount.getId());
-    }
-
-    @Override
-    public LoginResForm logIn(LoginReqForm reqForm) {
-        Optional<Account> maybeAccount = accountRepository.findByEmail(reqForm.getEmail());
-        if (maybeAccount.isEmpty()) {
-            log.info("no account has received email");
-            return null;
-        }
-
-        Account savedAccount = maybeAccount.get();
-        if (!savedAccount.getPassword().equals(reqForm.getPassword())) {
-            log.info("wrong password");
-            return null;
-        }
-        String userToken = userTokenRepository.setUserToken(savedAccount.getId());
-        return new LoginResForm(userToken, savedAccount.getNickName(), savedAccount.getId());
-    }
 
     @Override
     public Account findByUserToken(String userToken) {
@@ -66,5 +31,19 @@ public class AccountServiceImpl implements AccountService{
             return null;
         }
         return maybeAccount.get();
+    }
+    @Override
+    public LoginResForm loginOauthUser(Long platformId, String platformName) {
+        Optional<Account> maybeAccount = accountRepository.findByOauthId(platformId, "kakao");
+
+        Account savedAccount = maybeAccount.orElseGet(() -> joinOauthUser(platformId, platformName));
+        String userToken = userTokenRepository.setUserToken(savedAccount.getId());
+        return new LoginResForm(userToken, savedAccount.getNickName(), savedAccount.getId());
+    }
+
+    @Override
+    public Account joinOauthUser(Long platformId, String platformName) {
+        Account newAccount =  new Account(platformId, platformName);
+        return accountRepository.save(newAccount);
     }
 }
