@@ -12,5 +12,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("select a from Account a where a.oauthId=:kakaoId and a.oauthPlatform=:platformName ")
     Optional<Account> findByOauthId(Long kakaoId, String platformName);
+    Boolean existsAccountByNickName(String nickname);
+    Boolean existsAccountByEmail(String email);
 
 }

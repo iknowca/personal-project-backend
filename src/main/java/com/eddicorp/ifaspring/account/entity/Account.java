@@ -19,9 +19,13 @@ public class Account {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonIgnore
+    @Setter
     private String email;
+    @Setter
     private String nickName;
+    @JsonIgnore
     private Long oauthId;
+    @JsonIgnore
     private String oauthPlatform;
     private String profileImage;
 
