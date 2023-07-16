@@ -119,4 +119,10 @@ public class BoardServiceImpl implements BoardService{
 
         return true;
     }
+
+    @Override
+    public List<Board> requestBoardListByAccountId(Long accountId) {
+        List<Board> boardList = boardRepository.findAllByAccountId(accountId);
+        return boardList;
+    }
 }

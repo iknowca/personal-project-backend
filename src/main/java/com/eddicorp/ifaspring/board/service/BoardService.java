@@ -17,4 +17,6 @@ public interface BoardService {
     Long modify(BoardReqForm reqForm);
 
     Boolean delete(Long boardId, HttpHeaders headers);
+
+    List<Board> requestBoardListByAccountId(Long accountId);
 }

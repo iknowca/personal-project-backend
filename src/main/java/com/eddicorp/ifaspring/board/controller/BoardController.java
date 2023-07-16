@@ -44,4 +44,9 @@ public class BoardController {
     public Boolean delete(@RequestParam Long boardId, @RequestHeader HttpHeaders headers) {
         return boardService.delete(boardId, headers);
     }
+    @GetMapping("/boards/{accountId}")
+    public List<Board> requestBoardListByAccountId(@PathVariable Long accountId) {
+        log.info("requestBoardListByAccountId");
+        return boardService.requestBoardListByAccountId(accountId);
+    }
 }
