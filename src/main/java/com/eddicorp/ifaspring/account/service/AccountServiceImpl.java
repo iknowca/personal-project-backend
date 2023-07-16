@@ -40,7 +40,7 @@ public class AccountServiceImpl implements AccountService{
 
         Account savedAccount = maybeAccount.orElseGet(() -> joinOauthUser(platformId, platformName, profileImage));
         String userToken = userTokenRepository.setUserToken(savedAccount.getId());
-        return new LoginResForm(userToken, savedAccount.getNickName(), savedAccount.getId());
+        return new LoginResForm(userToken, savedAccount);
     }
 
     @Override
