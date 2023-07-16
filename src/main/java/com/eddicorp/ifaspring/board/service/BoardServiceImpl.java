@@ -81,7 +81,9 @@ public class BoardServiceImpl implements BoardService{
             return null;
         }
         Board savedBoard = maybeBoard.get();
+        savedBoard.setModifiedDate(null);
         BoardContent savedBoardContent = savedBoard.getContent();
+
 //        List<ImgPath> imgPathList = savedBoardContent.getImgPathList();
 
         savedBoard.setTitle(reqForm.getTitle());
