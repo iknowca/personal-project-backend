@@ -6,10 +6,8 @@ import com.eddicorp.ifaspring.board.entity.Board;
 import com.eddicorp.ifaspring.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,5 +39,9 @@ public class BoardController {
     public Long modify(@RequestBody BoardReqForm reqForm) {
         log.info("modify()");
         return boardService.modify(reqForm);
+    }
+    @DeleteMapping()
+    public Boolean delete(@RequestParam Long boardId, @RequestHeader HttpHeaders headers) {
+        return boardService.delete(boardId, headers);
     }
 }

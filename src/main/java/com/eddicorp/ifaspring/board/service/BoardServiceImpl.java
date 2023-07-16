@@ -13,10 +13,12 @@ import com.eddicorp.ifaspring.board.repository.ImgPathRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -90,5 +92,31 @@ public class BoardServiceImpl implements BoardService{
         boardContentRepository.save(savedBoardContent);
 
         return boardRepository.save(savedBoard).getId();
+    }
+
+    @Override
+    @Transactional
+    public Boolean delete(Long boardId, HttpHeaders headers) {
+        Account writer = accountService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
+        if(writer==null) {
+            return null;
+        }
+        Optional<Board> maybeBoard = boardRepository.findById(boardId);
+        if(maybeBoard.isEmpty()) {
+            return null;
+        }
+        Board savedBoard = maybeBoard.get();
+        if(!Objects.equals(savedBoard.getWriter().getId(), writer.getId())) {
+            return null;
+        }
+
+        List<ImgPath> imgPathList = savedBoard.getContent().getImgPathList();
+        if(savedBoard.getContent().getImgPathList().size()!=0) {
+            imgPathRepository.deleteAll(imgPathList);
+        }
+        boardContentRepository.delete(savedBoard.getContent());
+        boardRepository.delete(savedBoard);
+
+        return true;
     }
 }
