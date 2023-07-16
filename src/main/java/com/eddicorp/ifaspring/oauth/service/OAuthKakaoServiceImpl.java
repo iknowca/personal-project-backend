@@ -1,9 +1,9 @@
-package com.eddicorp.ifaspring.auth.service;
+package com.eddicorp.ifaspring.oauth.service;
 
 import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.account.service.AccountService;
-import com.eddicorp.ifaspring.auth.dto.KakaoProfile;
-import com.eddicorp.ifaspring.auth.dto.OAuthToken;
+import com.eddicorp.ifaspring.oauth.dto.KakaoProfile;
+import com.eddicorp.ifaspring.oauth.dto.OAuthToken;
 import com.eddicorp.ifaspring.utility.property.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
-public class AuthKakaoServiceImpl implements AuthKakaoService{
+public class OAuthKakaoServiceImpl implements OAuthKakaoService {
     final private PropertyUtil propertyUtil;
     final private AccountService accountService;
 

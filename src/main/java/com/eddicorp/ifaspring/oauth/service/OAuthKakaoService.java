@@ -1,8 +1,8 @@
-package com.eddicorp.ifaspring.auth.service;
+package com.eddicorp.ifaspring.oauth.service;
 
 import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
 
-public interface AuthKakaoService {
+public interface OAuthKakaoService {
     public String getAuthorizeCode();
 
     LoginResForm getToken(String code);

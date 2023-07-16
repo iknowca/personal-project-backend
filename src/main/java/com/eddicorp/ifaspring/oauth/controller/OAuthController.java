@@ -1,7 +1,7 @@
-package com.eddicorp.ifaspring.auth.controller;
+package com.eddicorp.ifaspring.oauth.controller;
 
 import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
-import com.eddicorp.ifaspring.auth.service.AuthKakaoService;
+import com.eddicorp.ifaspring.oauth.service.OAuthKakaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
-    final AuthKakaoService kakaoService;
+public class OAuthController {
+    final OAuthKakaoService kakaoService;
 
     @GetMapping("/kakao")
     public String requestKakaoAuthorizeCode() {

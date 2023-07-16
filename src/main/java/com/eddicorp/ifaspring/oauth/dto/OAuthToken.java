@@ -1,4 +1,4 @@
-package com.eddicorp.ifaspring.auth.dto;
+package com.eddicorp.ifaspring.oauth.dto;
 
 import lombok.Data;
 
