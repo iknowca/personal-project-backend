@@ -1,6 +1,6 @@
 package com.eddicorp.ifaspring.board.entity;
 
-import com.eddicorp.ifaspring.account.entity.Account;
+import com.eddicorp.ifaspring.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +22,7 @@ public class Board {
     private Long id;
     private String title;
     @ManyToOne(fetch=FetchType.LAZY)
-    private Account writer;
+    private User writer;
     @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonIgnore
     private BoardContent content;
@@ -34,7 +32,7 @@ public class Board {
     private LocalDateTime modifiedDate;
 
     @Builder
-    public Board(String title, Account writer, BoardContent content) {
+    public Board(String title, User writer, BoardContent content) {
         this.title = title;
         this.writer = writer;
         this.content = content;

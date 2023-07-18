@@ -1,7 +1,7 @@
 package com.eddicorp.ifaspring.oauth.service;
 
-import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
-import com.eddicorp.ifaspring.account.service.AccountService;
+import com.eddicorp.ifaspring.user.controller.form.LoginResForm;
+import com.eddicorp.ifaspring.user.service.UserService;
 import com.eddicorp.ifaspring.oauth.dto.KakaoProfile;
 import com.eddicorp.ifaspring.oauth.dto.OAuthToken;
 import com.eddicorp.ifaspring.utility.property.PropertyUtil;
@@ -21,7 +21,7 @@ import java.util.Objects;
 @Service
 public class OAuthKakaoServiceImpl implements OAuthKakaoService {
     final private PropertyUtil propertyUtil;
-    final private AccountService accountService;
+    final private UserService userService;
 
     public String getAuthorizeCode() {
         final String CLIENT_ID = propertyUtil.getProperty("auth.kakao.client_id");
@@ -70,7 +70,7 @@ public class OAuthKakaoServiceImpl implements OAuthKakaoService {
         ResponseEntity<KakaoProfile> kakaoUserInfoResponse = restTemplate.exchange(URL, HttpMethod.POST, kakaoUserInfoRequest, KakaoProfile.class);
         Long kakaoUserId = Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getId();
         String profileImage = Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getProperties().getProfile_image();
-        return accountService.loginOauthUser(kakaoUserId, "kakao", profileImage);
+        return userService.loginOauthUser(kakaoUserId, "kakao", profileImage);
     }
 
 

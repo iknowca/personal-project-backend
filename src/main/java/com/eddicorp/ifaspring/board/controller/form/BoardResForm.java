@@ -1,11 +1,7 @@
 package com.eddicorp.ifaspring.board.controller.form;
 
-import com.eddicorp.ifaspring.account.entity.Account;
 import com.eddicorp.ifaspring.board.entity.Board;
 import com.eddicorp.ifaspring.board.entity.BoardContent;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

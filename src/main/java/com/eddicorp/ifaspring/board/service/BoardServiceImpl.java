@@ -1,7 +1,7 @@
 package com.eddicorp.ifaspring.board.service;
 
-import com.eddicorp.ifaspring.account.entity.Account;
-import com.eddicorp.ifaspring.account.service.AccountService;
+import com.eddicorp.ifaspring.user.entity.User;
+import com.eddicorp.ifaspring.user.service.UserService;
 import com.eddicorp.ifaspring.board.controller.form.BoardReqForm;
 import com.eddicorp.ifaspring.board.controller.form.BoardResForm;
 import com.eddicorp.ifaspring.board.entity.Board;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class BoardServiceImpl implements BoardService{
-    final AccountService accountService;
+    final UserService userService;
     final BoardRepository boardRepository;
     final BoardContentRepository boardContentRepository;
     final ImgPathRepository imgPathRepository;
@@ -33,7 +33,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public Long write(BoardReqForm reqForm) {
-        Account writer = accountService.findByUserToken(reqForm.getUserToken());
+        User writer = userService.findByUserToken(reqForm.getUserToken());
         if(writer==null) {
             return null;
         }
@@ -72,7 +72,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public Long modify(BoardReqForm reqForm) {
-        Account writer = accountService.findByUserToken(reqForm.getUserToken());
+        User writer = userService.findByUserToken(reqForm.getUserToken());
         if(writer==null) {
             return null;
         }
@@ -99,7 +99,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public Boolean delete(Long boardId, HttpHeaders headers) {
-        Account writer = accountService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
+        User writer = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
         if(writer==null) {
             return null;
         }

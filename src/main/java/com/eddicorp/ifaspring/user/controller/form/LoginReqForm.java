@@ -1,4 +1,4 @@
-package com.eddicorp.ifaspring.account.controller.form;
+package com.eddicorp.ifaspring.user.controller.form;
 
 import lombok.Getter;
 

@@ -1,6 +1,5 @@
-package com.eddicorp.ifaspring.account.controller.form;
+package com.eddicorp.ifaspring.user.controller.form;
 
-import com.eddicorp.ifaspring.account.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

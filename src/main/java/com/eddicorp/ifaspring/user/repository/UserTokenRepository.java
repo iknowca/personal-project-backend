@@ -1,6 +1,5 @@
-package com.eddicorp.ifaspring.account.repository;
+package com.eddicorp.ifaspring.user.repository;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

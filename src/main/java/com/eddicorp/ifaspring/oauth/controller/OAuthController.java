@@ -1,6 +1,6 @@
 package com.eddicorp.ifaspring.oauth.controller;
 
-import com.eddicorp.ifaspring.account.controller.form.LoginResForm;
+import com.eddicorp.ifaspring.user.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.oauth.service.OAuthKakaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
