@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
         return maybeUser.get();
     }
     @Override
-    public LoginResForm loginOauthUser(Long platformId, String platformName, String profileImage) {
+    public LoginResForm loginOauthUser(BigInteger platformId, String platformName, String profileImage) {
         Optional<User> maybeUser = userRepository.findByOauthId(platformId, "kakao");
 
         User savedUser = maybeUser.orElseGet(() -> joinOauthUser(platformId, platformName, profileImage));
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User joinOauthUser(Long platformId, String platformName, String profileImage) {
+    public User joinOauthUser(BigInteger platformId, String platformName, String profileImage) {
         User newUser =  new User(platformId, platformName, profileImage);
         return userRepository.save(newUser);
     }

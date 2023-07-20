@@ -15,6 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigInteger;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class OAuthKakaoServiceImpl implements OAuthKakaoService {
 
     public String getAuthorizeCode() {
         final String CLIENT_ID = propertyUtil.getProperty("auth.kakao.client_id");
-        final String REDIRECTION_URL = propertyUtil.getProperty("auth.redirection");
+        final String REDIRECTION_URL = propertyUtil.getProperty("auth.kakao.redirection");
         final String url =  "https://kauth.kakao.com/oauth/authorize?client_id="+CLIENT_ID+"&redirect_uri="+REDIRECTION_URL+"&response_type=code";
 
         return url;
@@ -44,7 +45,7 @@ public class OAuthKakaoServiceImpl implements OAuthKakaoService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", propertyUtil.getProperty("auth.kakao.client_id"));
-        body.add("redirect_uri", propertyUtil.getProperty("auth.redirection"));
+        body.add("redirect_uri", propertyUtil.getProperty("auth.kakao.redirection"));
         body.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
@@ -70,7 +71,7 @@ public class OAuthKakaoServiceImpl implements OAuthKakaoService {
         ResponseEntity<KakaoProfile> kakaoUserInfoResponse = restTemplate.exchange(URL, HttpMethod.POST, kakaoUserInfoRequest, KakaoProfile.class);
         Long kakaoUserId = Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getId();
         String profileImage = Objects.requireNonNull(kakaoUserInfoResponse.getBody()).getProperties().getProfile_image();
-        return userService.loginOauthUser(kakaoUserId, "kakao", profileImage);
+        return userService.loginOauthUser(BigInteger.valueOf(kakaoUserId), "kakao", profileImage);
     }
 
 

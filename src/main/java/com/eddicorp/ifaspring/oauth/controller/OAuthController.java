@@ -1,5 +1,6 @@
 package com.eddicorp.ifaspring.oauth.controller;
 
+import com.eddicorp.ifaspring.oauth.service.OAuthGoogleService;
 import com.eddicorp.ifaspring.user.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.oauth.service.OAuthKakaoService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OAuthController {
     final OAuthKakaoService kakaoService;
+    final OAuthGoogleService googleService;
 
     @GetMapping("/kakao")
     public String requestKakaoAuthorizeCode() {
@@ -26,4 +28,17 @@ public class OAuthController {
         log.info("kakao getToken()");
         return kakaoService.getToken(code);
     }
+
+    @GetMapping("/google")
+    public String requestGoogleAuthorizeCode() {
+        log.info("google join()");
+        return googleService.getAuthorizeCode();
+    }
+
+    @GetMapping("/google/access-token")
+    public LoginResForm getGoogleToken(@RequestParam String code) {
+        log.info("google getToken()");
+        return googleService.login(code);
+    }
+
 }
