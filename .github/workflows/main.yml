@@ -41,6 +41,8 @@ jobs:
       - name: make properties files
         run: |
           echo "${{ secrets.OAUTH_PROPERTIES }}" > ./src/main/resources/auth.properties
+          echo "${{ secrets.SERVER_PROPERTIES }}" > ./src/main/resources/server.properties
+          echo "${{ sercrets.SSL_KEY }}" > ./src/main/resources/cert_and_key.p12
           
         
         
