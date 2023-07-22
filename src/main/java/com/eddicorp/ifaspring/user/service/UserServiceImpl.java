@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public LoginResForm loginOauthUser(BigInteger platformId, String platformName, String profileImage) {
-        Optional<User> maybeUser = userRepository.findByOauthId(platformId, "kakao");
+        Optional<User> maybeUser = userRepository.findByOauthId(platformId, platformName);
 
         User savedUser = maybeUser.orElseGet(() -> joinOauthUser(platformId, platformName, profileImage));
         String userToken = userTokenRepository.setUserToken(savedUser.getId());

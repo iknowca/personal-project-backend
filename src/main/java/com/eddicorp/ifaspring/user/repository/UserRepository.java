@@ -11,8 +11,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     Optional<User> findByNickName(String nickName);
 
-    @Query("select a from User a where a.oauthId=:kakaoId and a.oauthPlatform=:platformName ")
-    Optional<User> findByOauthId(BigInteger kakaoId, String platformName);
+    @Query("select a from User a where a.oauthId=:platformId and a.oauthPlatform=:platformName ")
+    Optional<User> findByOauthId(BigInteger platformId, String platformName);
     Boolean existsUserByNickName(String nickname);
     Boolean existsUserByEmail(String email);
 
