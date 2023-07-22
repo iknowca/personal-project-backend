@@ -1,6 +1,7 @@
 package com.eddicorp.ifaspring.user.controller;
 
 import com.eddicorp.ifaspring.user.controller.form.AdditionalValueReqForm;
+import com.eddicorp.ifaspring.user.controller.form.UserResForm;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.eddicorp.ifaspring.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class UserController {
         return userService.emailCheck(email);
     }
     @PostMapping("/additional-value")
-    public User setAdditionalValue(@RequestBody AdditionalValueReqForm reqForm, @RequestHeader HttpHeaders header) {
+    public UserResForm setAdditionalValue(@RequestBody AdditionalValueReqForm reqForm, @RequestHeader HttpHeaders header) {
         log.info("setAccountValue()");
         System.out.println(header);
         return userService.setAdditionalValue(reqForm, header);

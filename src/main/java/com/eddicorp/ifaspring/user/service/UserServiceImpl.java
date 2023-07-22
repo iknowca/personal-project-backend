@@ -2,9 +2,11 @@ package com.eddicorp.ifaspring.user.service;
 
 import com.eddicorp.ifaspring.user.controller.form.AdditionalValueReqForm;
 import com.eddicorp.ifaspring.user.controller.form.LoginResForm;
+import com.eddicorp.ifaspring.user.controller.form.UserResForm;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.eddicorp.ifaspring.user.repository.UserRepository;
 import com.eddicorp.ifaspring.user.repository.UserTokenRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -61,14 +63,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User setAdditionalValue(AdditionalValueReqForm reqForm, HttpHeaders header) {
+    @Transactional
+    public UserResForm setAdditionalValue(AdditionalValueReqForm reqForm, HttpHeaders header) {
         User maybeUser = findByUserToken(Objects.requireNonNull(header.get("authorization")).get(0));
         if(maybeUser ==null) {
             return null;
         }
         maybeUser.setEmail(reqForm.getEmail());
         maybeUser.setNickName(reqForm.getNickName());
-
-        return userRepository.save(maybeUser);
+        User savedUser = userRepository.save(maybeUser);
+        return UserResForm.builder()
+                .id(savedUser.getId())
+                .nickName(savedUser.getNickName())
+                .profileImage(savedUser.getProfileImage())
+                .email(savedUser.getEmail())
+                .oauthPlatform(savedUser.getOauthPlatform())
+                .build();
     }
 }

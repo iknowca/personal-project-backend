@@ -2,6 +2,7 @@ package com.eddicorp.ifaspring.user.service;
 
 import com.eddicorp.ifaspring.user.controller.form.AdditionalValueReqForm;
 import com.eddicorp.ifaspring.user.controller.form.LoginResForm;
+import com.eddicorp.ifaspring.user.controller.form.UserResForm;
 import com.eddicorp.ifaspring.user.entity.User;
 import org.springframework.http.HttpHeaders;
 
@@ -17,5 +18,5 @@ public interface UserService {
 
     Boolean emailCheck(String email);
 
-    User setAdditionalValue(AdditionalValueReqForm reqForm, HttpHeaders header);
+    UserResForm setAdditionalValue(AdditionalValueReqForm reqForm, HttpHeaders header);
 }
