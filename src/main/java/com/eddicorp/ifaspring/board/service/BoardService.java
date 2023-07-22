@@ -12,11 +12,11 @@ public interface BoardService {
 
     BoardResForm requestBoard(Long boardId);
 
-    List<Board> requestBoardList();
+    List<BoardResForm> requestBoardList();
 
     Long modify(BoardReqForm reqForm);
 
     Boolean delete(Long boardId, HttpHeaders headers);
 
-    List<Board> requestBoardListByAccountId(Long accountId);
+    List<BoardResForm> requestBoardListByAccountId(Long accountId);
 }

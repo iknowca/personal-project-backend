@@ -29,8 +29,8 @@ public class BoardController {
         return boardService.requestBoard(boardId);
     }
 
-    @GetMapping("/boards")
-    public List<Board> requestBoardList() {
+    @GetMapping("/list")
+    public List<BoardResForm> requestBoardList() {
         log.info("requestBoardList");
         return boardService.requestBoardList();
     }
@@ -44,8 +44,8 @@ public class BoardController {
     public Boolean delete(@RequestParam Long boardId, @RequestHeader HttpHeaders headers) {
         return boardService.delete(boardId, headers);
     }
-    @GetMapping("/boards/{accountId}")
-    public List<Board> requestBoardListByAccountId(@PathVariable Long accountId) {
+    @GetMapping("/list/{accountId}")
+    public List<BoardResForm> requestBoardListByAccountId(@PathVariable Long accountId) {
         log.info("requestBoardListByAccountId");
         return boardService.requestBoardListByAccountId(accountId);
     }

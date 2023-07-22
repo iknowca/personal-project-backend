@@ -57,16 +57,34 @@ public class BoardServiceImpl implements BoardService{
             return null;
         }
         Board savedBoard = maybeBoard.get();
-        BoardContent boardContent = savedBoard.getContent();
-        List<Long> imgPathList = boardContent.getImgPathList().stream().map((imgPath)->imgPath.getId()).toList();
-        BoardResForm resForm = new BoardResForm(savedBoard, boardContent);
+        List<Long> imgPathList = savedBoard.getContent().getImgPathList().stream().map(ImgPath::getId).toList();
+        BoardResForm resForm = BoardResForm.builder()
+                .id(savedBoard.getId())
+                .createdDate(savedBoard.getCreatedDate())
+                .modifiedDate(savedBoard.getModifiedDate())
+                .title(savedBoard.getTitle())
+                .content(savedBoard.getContent())
+                .writer(savedBoard.getWriter())
+                .build();
+
         return resForm;
     }
-
+//  @Override
+//    public List<Board> requestBoardList() {
+//        List<Board> boardList = boardRepository.findAllWithWriter();
+//        return boardList;
+//    }
     @Override
-    public List<Board> requestBoardList() {
-        List<Board> boardList = boardRepository.findAllWithWriter();
-        return boardList;
+    public List<BoardResForm> requestBoardList() {
+        List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter().stream().map((b)->
+                BoardResForm.builder()
+                        .writer(b.getWriter())
+                        .createdDate(b.getCreatedDate())
+                        .title(b.getTitle())
+                        .id(b.getId())
+                        .build()
+        ).toList();
+        return boardResFormList;
     }
 
     @Override
@@ -123,8 +141,15 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<Board> requestBoardListByAccountId(Long accountId) {
-        List<Board> boardList = boardRepository.findAllByAccountId(accountId);
+    public List<BoardResForm> requestBoardListByAccountId(Long accountId) {
+        List<BoardResForm> boardList = boardRepository.findAllByAccountId(accountId).stream().map((b)->
+                BoardResForm.builder()
+                        .writer(b.getWriter())
+                        .createdDate(b.getCreatedDate())
+                        .title(b.getTitle())
+                        .id(b.getId())
+                        .build()
+        ).toList();
         return boardList;
     }
 }

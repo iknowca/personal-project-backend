@@ -24,7 +24,6 @@ public class Board {
     @ManyToOne(fetch=FetchType.LAZY)
     private User writer;
     @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JsonIgnore
     private BoardContent content;
     @CreationTimestamp
     private LocalDateTime createdDate;
