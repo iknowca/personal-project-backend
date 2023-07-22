@@ -1,9 +1,8 @@
 package com.eddicorp.ifaspring.board.service;
 
+import com.eddicorp.ifaspring.board.controller.form.*;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.eddicorp.ifaspring.user.service.UserService;
-import com.eddicorp.ifaspring.board.controller.form.BoardReqForm;
-import com.eddicorp.ifaspring.board.controller.form.BoardResForm;
 import com.eddicorp.ifaspring.board.entity.Board;
 import com.eddicorp.ifaspring.board.entity.BoardContent;
 import com.eddicorp.ifaspring.board.entity.ImgPath;
@@ -58,16 +57,16 @@ public class BoardServiceImpl implements BoardService{
         }
         Board savedBoard = maybeBoard.get();
         List<Long> imgPathList = savedBoard.getContent().getImgPathList().stream().map(ImgPath::getId).toList();
-        BoardResForm resForm = BoardResForm.builder()
+        BoardContentResForm boardContentResForm = new BoardContentResForm(savedBoard.getContent());
+        return BoardResForm.builder()
                 .id(savedBoard.getId())
                 .createdDate(savedBoard.getCreatedDate())
                 .modifiedDate(savedBoard.getModifiedDate())
                 .title(savedBoard.getTitle())
-                .content(savedBoard.getContent())
-                .writer(savedBoard.getWriter())
+                .content(new BoardContentResForm(savedBoard.getContent()))
+                .writer(new Writer(savedBoard.getWriter()))
+                .replys(savedBoard.getReplys().stream().map(ReplyResForm::new).toList())
                 .build();
-
-        return resForm;
     }
 //  @Override
 //    public List<Board> requestBoardList() {
@@ -78,7 +77,7 @@ public class BoardServiceImpl implements BoardService{
     public List<BoardResForm> requestBoardList() {
         List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter().stream().map((b)->
                 BoardResForm.builder()
-                        .writer(b.getWriter())
+                        .writer(new Writer(b.getWriter()))
                         .createdDate(b.getCreatedDate())
                         .title(b.getTitle())
                         .id(b.getId())
@@ -144,7 +143,7 @@ public class BoardServiceImpl implements BoardService{
     public List<BoardResForm> requestBoardListByAccountId(Long accountId) {
         List<BoardResForm> boardList = boardRepository.findAllByAccountId(accountId).stream().map((b)->
                 BoardResForm.builder()
-                        .writer(b.getWriter())
+                        .writer(new Writer(b.getWriter()))
                         .createdDate(b.getCreatedDate())
                         .title(b.getTitle())
                         .id(b.getId())

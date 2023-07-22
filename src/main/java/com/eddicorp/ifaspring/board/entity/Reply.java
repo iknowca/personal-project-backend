@@ -1,42 +1,37 @@
 package com.eddicorp.ifaspring.board.entity;
 
+import com.eddicorp.ifaspring.board.controller.form.BoardResForm;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
-public class Board {
+public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User writer;
-    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private BoardContent content;
+    @Setter
+    private String content;
     @CreationTimestamp
     private LocalDateTime createdDate;
     @UpdateTimestamp
     private LocalDateTime modifiedDate;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
-    private List<Reply> replys;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Board board;
 
     @Builder
-    public Board(String title, User writer, BoardContent content) {
-        this.title = title;
+    public Reply(User writer, String content, Board board) {
         this.writer = writer;
         this.content = content;
+        this.board = board;
     }
 }
