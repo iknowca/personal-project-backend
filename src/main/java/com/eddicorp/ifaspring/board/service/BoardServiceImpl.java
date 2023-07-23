@@ -50,7 +50,7 @@ public class BoardServiceImpl implements BoardService{
 
         return boardRepository.save(board).getId();
     }
-
+    
     @Override
     @Transactional
     public BoardResForm requestBoard(Long boardId) {
@@ -59,7 +59,6 @@ public class BoardServiceImpl implements BoardService{
             return null;
         }
         Board savedBoard = maybeBoard.get();
-        List<Long> imgPathList = savedBoard.getContent().getImgPathList().stream().map(ImgPath::getId).toList();
         BoardContentResForm boardContentResForm = new BoardContentResForm(savedBoard.getContent());
         return BoardResForm.builder()
                 .id(savedBoard.getId())

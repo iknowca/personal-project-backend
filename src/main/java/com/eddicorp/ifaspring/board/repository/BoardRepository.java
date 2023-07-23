@@ -14,7 +14,11 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllWithWriter();
     @Query("select b from Board b join fetch b.writer")
     List<Board> findAllWithWriter(Pageable pageable);
-    @Query("select b from Board b join fetch b.writer join fetch b.content where b.id = :id")
+    @Query("select b from Board b " +
+            "join fetch b.writer " +
+            "join fetch b.content " +
+            "left join fetch b.content.imgPathList " +
+            "where b.id = :id")
     Optional<Board> findBoardByIdWithContent(Long id);
     @Query("select b from Board b join fetch b.writer w join fetch b.content where w.id=:accountId")
     List<Board> findAllByAccountId(Long accountId);
