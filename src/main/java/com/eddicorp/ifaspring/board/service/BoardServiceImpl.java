@@ -50,7 +50,7 @@ public class BoardServiceImpl implements BoardService{
 
         return boardRepository.save(board).getId();
     }
-    
+
     @Override
     @Transactional
     public BoardResForm requestBoard(Long boardId) {
@@ -68,6 +68,7 @@ public class BoardServiceImpl implements BoardService{
                 .content(new BoardContentResForm(savedBoard.getContent()))
                 .writer(new Writer(savedBoard.getWriter()))
                 .replys(savedBoard.getReplys().stream().map(ReplyResForm::new).toList())
+                .numReplys(savedBoard.getNumReply())
                 .build();
     }
 //  @Override
@@ -96,6 +97,7 @@ public class BoardServiceImpl implements BoardService{
                         .createdDate(b.getCreatedDate())
                         .title(b.getTitle())
                         .id(b.getId())
+                        .numReplys(b.getNumReply())
                         .build()
         ).toList();
         return boardResFormList;

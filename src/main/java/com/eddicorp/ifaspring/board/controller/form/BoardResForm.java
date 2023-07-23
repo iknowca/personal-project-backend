@@ -20,9 +20,10 @@ public class BoardResForm {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private List<ReplyResForm> replys;
+    private Integer numReplys;
 
     @Builder
-    public BoardResForm(Long id, String title, Writer writer, BoardContentResForm content, LocalDateTime createdDate, LocalDateTime modifiedDate, List<ReplyResForm> replys) {
+    public BoardResForm(Long id, String title, Writer writer, BoardContentResForm content, LocalDateTime createdDate, LocalDateTime modifiedDate, List<ReplyResForm> replys, Integer numReplys) {
         this.id = id;
         this.title = title;
         this.writer = writer;
@@ -30,6 +31,7 @@ public class BoardResForm {
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.replys = replys;
+        this.numReplys = numReplys;
     }
 
 }

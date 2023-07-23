@@ -25,7 +25,7 @@ public class Reply {
     private LocalDateTime createdDate;
     @UpdateTimestamp
     private LocalDateTime modifiedDate;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Board board;
 
     @Builder

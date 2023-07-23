@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -32,11 +34,13 @@ public class Board {
     private LocalDateTime modifiedDate;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     private List<Reply> replys;
+    private Integer numReply;
 
     @Builder
     public Board(String title, User writer, BoardContent content) {
         this.title = title;
         this.writer = writer;
         this.content = content;
+        this.numReply = 0;
     }
 }

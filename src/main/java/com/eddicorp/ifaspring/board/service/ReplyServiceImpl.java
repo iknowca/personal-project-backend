@@ -37,14 +37,16 @@ public class ReplyServiceImpl implements ReplyService{
                 .content(reqForm.getContent())
                 .board(maybeBoard.get())
                 .build();
-        maybeBoard.get().getReplys().add(reply);
-        System.out.println(maybeBoard.get().getReplys());
+        Board savedBoard = maybeBoard.get();
+        savedBoard.getReplys().add(reply);
+        savedBoard.setNumReply(savedBoard.getReplys().size());
         replyRepository.save(reply);
-        boardRepository.save(maybeBoard.get());
+        boardRepository.save(savedBoard);
         return boardService.requestBoard(boardId);
     }
 
     @Override
+    @Transactional
     public BoardResForm delete(Long replyId, String authorization) {
         User maybeUser = userService.findByUserToken(authorization);
         if(maybeUser==null) {
@@ -58,9 +60,13 @@ public class ReplyServiceImpl implements ReplyService{
         if(savedReply.getWriter().getId()!= maybeUser.getId()) {
             return null;
         }
-        Long boardId = savedReply.getBoard().getId();
+        Board savedBoard = savedReply.getBoard();
+        savedBoard.getReplys().remove(savedReply);
+        savedBoard.setNumReply(savedBoard.getReplys().size());
         replyRepository.delete(savedReply);
-        return boardService.requestBoard(boardId);
+        boardRepository.save(savedBoard);
+
+        return boardService.requestBoard(savedBoard.getId());
     }
 
     @Override
