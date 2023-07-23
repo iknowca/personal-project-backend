@@ -34,6 +34,11 @@ public class BoardController {
         log.info("requestBoardList");
         return boardService.requestBoardList();
     }
+    @GetMapping(value="/list", params={"page", "size"})
+    public List<BoardResForm> requestBoardList(@RequestParam Integer page, @RequestParam Integer size) {
+        log.info("requestBoardList with pagination()");
+        return boardService.requestBoardList(page, size);
+    }
 
     @PutMapping
     public Long modify(@RequestBody BoardReqForm reqForm) {

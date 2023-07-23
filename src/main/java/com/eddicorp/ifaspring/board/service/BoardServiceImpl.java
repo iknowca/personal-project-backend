@@ -12,6 +12,8 @@ import com.eddicorp.ifaspring.board.repository.ImgPathRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,19 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public List<BoardResForm> requestBoardList() {
         List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter().stream().map((b)->
+                BoardResForm.builder()
+                        .writer(new Writer(b.getWriter()))
+                        .createdDate(b.getCreatedDate())
+                        .title(b.getTitle())
+                        .id(b.getId())
+                        .build()
+        ).toList();
+        return boardResFormList;
+    }
+    @Override
+    public List<BoardResForm> requestBoardList(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter(pageable).stream().map((b)->
                 BoardResForm.builder()
                         .writer(new Writer(b.getWriter()))
                         .createdDate(b.getCreatedDate())
