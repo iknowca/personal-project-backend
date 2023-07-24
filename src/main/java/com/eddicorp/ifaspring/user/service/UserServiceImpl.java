@@ -5,7 +5,6 @@ import com.eddicorp.ifaspring.user.controller.form.LoginResForm;
 import com.eddicorp.ifaspring.user.controller.form.UserResForm;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.eddicorp.ifaspring.user.repository.UserRepository;
-import com.eddicorp.ifaspring.user.repository.UserTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,17 +14,18 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     final UserRepository userRepository;
-    final UserTokenRepository userTokenRepository;
+    final UserTokenService redisService;
 
     @Override
     public User findByUserToken(String userToken) {
-        Long userId = userTokenRepository.findByUserToken(userToken);
+        Long userId = redisService.getValueByKey(userToken);
         if(userId==null) {
             log.info("no User has received userToken");
             return null;
@@ -42,8 +42,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> maybeUser = userRepository.findByOauthId(platformId, platformName);
 
         User savedUser = maybeUser.orElseGet(() -> joinOauthUser(platformId, platformName, profileImage));
-        String userToken = userTokenRepository.setUserToken(savedUser.getId());
+        String userToken = String.valueOf(UUID.randomUUID());
+        redisService.setKeyAndValue(userToken, savedUser.getId());
         return new LoginResForm(userToken, savedUser);
+
     }
 
     @Override
