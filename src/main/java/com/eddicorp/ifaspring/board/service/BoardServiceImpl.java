@@ -46,6 +46,7 @@ public class BoardServiceImpl implements BoardService{
                 .title(reqForm.getTitle())
                 .content(boardContent)
                 .writer(writer)
+                .location(reqForm.getLocation().toLocation())
                 .build();
 
         return boardRepository.save(board).getId();

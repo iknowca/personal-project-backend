@@ -1,5 +1,6 @@
 package com.eddicorp.ifaspring.board.entity;
 
+import com.eddicorp.ifaspring.map.entity.Location;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -35,12 +36,15 @@ public class Board {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     private List<Reply> replys;
     private Integer numReply;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Location location;
 
     @Builder
-    public Board(String title, User writer, BoardContent content) {
+    public Board(String title, User writer, BoardContent content, Location location) {
         this.title = title;
         this.writer = writer;
         this.content = content;
         this.numReply = 0;
+        this.location = location;
     }
 }

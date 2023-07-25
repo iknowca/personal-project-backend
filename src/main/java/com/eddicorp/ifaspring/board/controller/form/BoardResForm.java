@@ -2,6 +2,7 @@ package com.eddicorp.ifaspring.board.controller.form;
 
 import com.eddicorp.ifaspring.board.entity.BoardContent;
 import com.eddicorp.ifaspring.board.entity.Reply;
+import com.eddicorp.ifaspring.map.controller.form.LocationResForm;
 import com.eddicorp.ifaspring.user.entity.User;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +22,10 @@ public class BoardResForm {
     private LocalDateTime modifiedDate;
     private List<ReplyResForm> replys;
     private Integer numReplys;
+    private LocationResForm location;
 
     @Builder
-    public BoardResForm(Long id, String title, Writer writer, BoardContentResForm content, LocalDateTime createdDate, LocalDateTime modifiedDate, List<ReplyResForm> replys, Integer numReplys) {
+    public BoardResForm(Long id, String title, Writer writer, BoardContentResForm content, LocalDateTime createdDate, LocalDateTime modifiedDate, List<ReplyResForm> replys, Integer numReplys, LocationResForm location) {
         this.id = id;
         this.title = title;
         this.writer = writer;
@@ -32,6 +34,7 @@ public class BoardResForm {
         this.modifiedDate = modifiedDate;
         this.replys = replys;
         this.numReplys = numReplys;
+        this.location = location;
     }
 
 }
