@@ -5,6 +5,7 @@ import com.eddicorp.ifaspring.board.controller.form.BoardResForm;
 import org.springframework.http.HttpHeaders;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BoardService {
     Long write(BoardReqForm reqForm);
@@ -21,4 +22,6 @@ public interface BoardService {
 
     List<BoardResForm> requestBoardListByAccountId(Long accountId);
 
+
+    List<BoardResForm> requestBoardListByLocation(Map<String, String> location, HttpHeaders headers);
 }

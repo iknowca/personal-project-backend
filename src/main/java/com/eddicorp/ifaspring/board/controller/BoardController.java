@@ -7,9 +7,11 @@ import com.eddicorp.ifaspring.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -53,5 +55,11 @@ public class BoardController {
     public List<BoardResForm> requestBoardListByAccountId(@PathVariable Long accountId) {
         log.info("requestBoardListByAccountId");
         return boardService.requestBoardListByAccountId(accountId);
+    }
+
+    @GetMapping(value="/list", params={"d_o", "si", "gu", "dong", "lat", "lng", "level"})
+    public List<BoardResForm> requestBoardListByLocation(@RequestParam Map<String, String> location, @RequestHeader HttpHeaders headers) {
+        log.info("requestBoardListbyLocation()");
+        return boardService.requestBoardListByLocation(location, headers);
     }
 }

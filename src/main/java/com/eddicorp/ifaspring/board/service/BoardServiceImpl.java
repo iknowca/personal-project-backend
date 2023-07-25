@@ -1,6 +1,8 @@
 package com.eddicorp.ifaspring.board.service;
 
 import com.eddicorp.ifaspring.board.controller.form.*;
+import com.eddicorp.ifaspring.map.controller.form.LocationResForm;
+import com.eddicorp.ifaspring.map.service.LocationService;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.eddicorp.ifaspring.user.service.UserService;
 import com.eddicorp.ifaspring.board.entity.Board;
@@ -18,10 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +30,7 @@ public class BoardServiceImpl implements BoardService{
     final BoardRepository boardRepository;
     final BoardContentRepository boardContentRepository;
     final ImgPathRepository imgPathRepository;
+    final LocationService locationService;
 
     @Override
     @Transactional
@@ -167,6 +167,28 @@ public class BoardServiceImpl implements BoardService{
                         .id(b.getId())
                         .build()
         ).toList();
+        return boardList;
+    }
+
+    @Override
+    @Transactional
+    public List<BoardResForm> requestBoardListByLocation(Map<String, String> location, HttpHeaders headers) {
+//        User user = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
+//        if(user==null) {
+//            return null;
+//        }
+        System.out.println(locationService.getBoardByLocation(location));
+        List<BoardResForm> boardList = locationService.getBoardByLocation(location).stream().map((b)->
+                BoardResForm.builder()
+                        .title(b.getTitle())
+                        .id(b.getId())
+                        .numReplys(b.getNumReply())
+                        .writer(new Writer(b.getWriter()))
+                        .createdDate(b.getCreatedDate())
+                        .location(new LocationResForm(b.getLocation()))
+                        .build()
+                ).toList();
+        log.info(boardList.toString());
         return boardList;
     }
 }
