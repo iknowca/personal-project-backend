@@ -34,25 +34,19 @@ public class LocationServiceImpl implements LocationService{
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdDate").descending());
         switch (locationMap.get("level")) {
             case "1"-> {
-                List<Board> boardl = boardRepository.findByLocationLevel1(locationMap, pageable);
-                log.info(boardl.toString());
-                return boardl;
+                return boardRepository.findByLocationLevel1(locationMap, pageable);
             }
             case "2"-> {
-                log.info("2");
 
                 return boardRepository.findByLocationLevel2(locationMap, pageable);
             }
             case "3"-> {
-                log.info("3");
                 return boardRepository.findByLocationLevel3(locationMap, pageable);
             }
             case "4"-> {
-                log.info("4");
                 return boardRepository.findByLocationLevel4(locationMap, pageable);
             }
             default-> {
-                log.info("5");
                 return boardRepository.findByLocationLevel5(locationMap, pageable);
             }
         }

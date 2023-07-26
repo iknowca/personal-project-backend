@@ -9,19 +9,11 @@ import java.util.Map;
 
 public interface BoardService {
     Long write(BoardReqForm reqForm);
-
     BoardResForm requestBoard(Long boardId);
     List<BoardResForm> requestBoardList(Integer page, Integer size);
-
-
     List<BoardResForm> requestBoardList();
-
     Long modify(BoardReqForm reqForm);
-
     Boolean delete(Long boardId, HttpHeaders headers);
-
     List<BoardResForm> requestBoardListByAccountId(Long accountId);
-
-
     List<BoardResForm> requestBoardListByLocation(Map<String, String> location, HttpHeaders headers);
 }

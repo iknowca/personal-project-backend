@@ -70,6 +70,7 @@ public class BoardServiceImpl implements BoardService{
                 .writer(new Writer(savedBoard.getWriter()))
                 .replys(savedBoard.getReplys().stream().map(ReplyResForm::new).toList())
                 .numReplys(savedBoard.getNumReply())
+                .location(new LocationResForm(savedBoard.getLocation()))
                 .build();
     }
 //  @Override
@@ -173,10 +174,10 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public List<BoardResForm> requestBoardListByLocation(Map<String, String> location, HttpHeaders headers) {
-//        User user = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
-//        if(user==null) {
-//            return null;
-//        }
+        User user = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
+        if(user==null) {
+            return null;
+        }
         System.out.println(locationService.getBoardByLocation(location));
         List<BoardResForm> boardList = locationService.getBoardByLocation(location).stream().map((b)->
                 BoardResForm.builder()

@@ -37,11 +37,7 @@ public class ReplyServiceImpl implements ReplyService{
                 .content(reqForm.getContent())
                 .board(maybeBoard.get())
                 .build();
-        Board savedBoard = maybeBoard.get();
-        savedBoard.getReplys().add(reply);
-        savedBoard.setNumReply(savedBoard.getReplys().size());
         replyRepository.save(reply);
-        boardRepository.save(savedBoard);
         return boardService.requestBoard(boardId);
     }
 
@@ -62,7 +58,6 @@ public class ReplyServiceImpl implements ReplyService{
         }
         Board savedBoard = savedReply.getBoard();
         savedBoard.getReplys().remove(savedReply);
-        savedBoard.setNumReply(savedBoard.getReplys().size());
         replyRepository.delete(savedReply);
         boardRepository.save(savedBoard);
 

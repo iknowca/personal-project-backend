@@ -20,6 +20,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("select b from Board b " +
             "join fetch b.writer " +
             "join fetch b.content " +
+            "join fetch b.location "+
             "left join fetch b.content.imgPathList " +
             "where b.id = :id")
     Optional<Board> findBoardByIdWithContent(Long id);
