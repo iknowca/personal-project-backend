@@ -1,6 +1,7 @@
 package com.eddicorp.ifaspring.board.service;
 
 import com.eddicorp.ifaspring.board.controller.form.*;
+import com.eddicorp.ifaspring.board.repository.ForkRepository;
 import com.eddicorp.ifaspring.map.controller.form.LocationResForm;
 import com.eddicorp.ifaspring.map.service.LocationService;
 import com.eddicorp.ifaspring.user.entity.User;
@@ -31,7 +32,7 @@ public class BoardServiceImpl implements BoardService{
     final BoardContentRepository boardContentRepository;
     final ImgPathRepository imgPathRepository;
     final LocationService locationService;
-
+    final ForkRepository forkRepository;
     @Override
     @Transactional
     public Long write(BoardReqForm reqForm) {
@@ -71,6 +72,8 @@ public class BoardServiceImpl implements BoardService{
                 .replys(savedBoard.getReplys().stream().map(ReplyResForm::new).toList())
                 .numReplys(savedBoard.getNumReply())
                 .location(new LocationResForm(savedBoard.getLocation()))
+                .forkUserList(new ForkResForm(boardId, forkRepository.findAllByBoard(savedBoard).stream()
+                        .map((f)->f.getUser().getId()).toList()))
                 .build();
     }
 //  @Override

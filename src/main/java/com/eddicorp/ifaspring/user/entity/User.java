@@ -1,6 +1,7 @@
 package com.eddicorp.ifaspring.user.entity;
 
 import com.eddicorp.ifaspring.board.entity.Board;
+import com.eddicorp.ifaspring.board.entity.Fork;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,8 @@ public class User {
     private BigInteger oauthId;
     private String oauthPlatform;
     private String profileImage;
-    @OneToMany(fetch = FetchType.LAZY)
-    List<Board> boardLiked;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Fork> forkList;
 
 
     public User(BigInteger oauthId, String oauthPlatform, String profileImage) {
