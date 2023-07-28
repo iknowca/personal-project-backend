@@ -26,6 +26,8 @@ public class User {
     private String profileImage;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Fork> forkList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
+    private List<Follow> followList;
 
 
     public User(BigInteger oauthId, String oauthPlatform, String profileImage) {
