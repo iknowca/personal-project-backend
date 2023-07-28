@@ -40,7 +40,7 @@ jobs:
         
       - name: make properties files
         run: |
-          ls
+          ls src/main/resources
           pwd
           echo "${{ secrets.OAUTH_PROPERTIES }}" > ./src/main/resources/auth.properties
           echo "${{ secrets.SERVER_PROPERTIES }}" > ./src/main/resources/application.properties
