@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "${{ secrets.OAUTH_PROPERTIES }}" > ./src/main/resources/auth.properties
           echo "${{ secrets.SERVER_PROPERTIES }}" > ./src/main/resources/application.properties
-          echo "${{ secrets.SSL_KEY }}"|base64 --decode > ./src/main/resources/cert_and_key.p12
+          echo "${{ secrets.SSL_KEY }}"|base64 --decode > ./src/main/resources/keystore.p12
           
         
         
