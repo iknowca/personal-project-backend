@@ -38,13 +38,12 @@ public class UserServiceImpl implements UserService {
         return maybeUser.get();
     }
     @Override
+    @Transactional
     public LoginResForm loginOauthUser(BigInteger platformId, String platformName, String profileImage) {
         Optional<User> maybeUser = userRepository.findByOauthId(platformId, platformName);
 
         User savedUser = maybeUser.orElseGet(() -> joinOauthUser(platformId, platformName, profileImage));
-        String userToken = String.valueOf(UUID.randomUUID());
-        redisService.setKeyAndValue(userToken, savedUser.getId());
-        return new LoginResForm(userToken, savedUser);
+        return login(savedUser);
 
     }
 
@@ -81,5 +80,12 @@ public class UserServiceImpl implements UserService {
                 .email(savedUser.getEmail())
                 .oauthPlatform(savedUser.getOauthPlatform())
                 .build();
+    }
+
+@Transactional
+    public LoginResForm login(User user) {
+        String userToken = String.valueOf(UUID.randomUUID());
+        redisService.setKeyAndValue(userToken, user.getId());
+        return new LoginResForm(userToken, user);
     }
 }

@@ -19,4 +19,5 @@ public interface UserService {
     Boolean emailCheck(String email);
 
     UserResForm setAdditionalValue(AdditionalValueReqForm reqForm, HttpHeaders header);
+    LoginResForm login(User user);
 }
