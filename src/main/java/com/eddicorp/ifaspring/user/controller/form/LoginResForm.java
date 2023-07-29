@@ -4,6 +4,7 @@ import com.eddicorp.ifaspring.user.entity.Follow;
 import com.eddicorp.ifaspring.user.entity.User;
 import lombok.Getter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -19,6 +20,9 @@ public class LoginResForm {
         this.nickName = user.getNickName();
         this.accountId = user.getId();
         this.profileImgPath = user.getProfileImage();
-        this.followeeList = user.getFollowList().stream().map((u)->u.getFollowee().getId()).toList();
+        if(user.getFollowList()==null) {
+            this.followeeList = new LinkedList<>();
+        }
+        else{this.followeeList = user.getFollowList().stream().map((u)->u.getFollowee().getId()).toList();}
     }
 }

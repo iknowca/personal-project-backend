@@ -16,4 +16,9 @@ public interface ForkRepository extends JpaRepository<Fork, Long> {
 
     @Query("select f from Fork f where f.board=:board")
     List<Fork> findAllByBoard(Board board);
+
+    @Query("select distinct f.board from Fork f join fetch f.board.writer " +
+            "join fetch f.board.location " +
+            " where f.user = :user")
+    List<Board> findAllByUser(User user);
 }

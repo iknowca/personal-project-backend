@@ -1,10 +1,12 @@
 package com.eddicorp.ifaspring.board.service;
 
 import com.eddicorp.ifaspring.board.controller.form.BoardResForm;
+import com.eddicorp.ifaspring.board.controller.form.Writer;
 import com.eddicorp.ifaspring.board.entity.Board;
 import com.eddicorp.ifaspring.board.entity.Fork;
 import com.eddicorp.ifaspring.board.repository.BoardRepository;
 import com.eddicorp.ifaspring.board.repository.ForkRepository;
+import com.eddicorp.ifaspring.map.controller.form.LocationResForm;
 import com.eddicorp.ifaspring.user.entity.User;
 import com.eddicorp.ifaspring.user.repository.UserRepository;
 import com.eddicorp.ifaspring.user.service.UserService;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -59,10 +63,32 @@ public class ForkServiceImpl implements ForkService {
 
         Board board = maybeBoard.get();
         Optional<Fork> savedFork = forkRepository.findByBoardAndUser(board, user);
-        if(savedFork.isEmpty()) {
+        if (savedFork.isEmpty()) {
             return null;
         }
         forkRepository.delete(savedFork.get());
         return boardService.requestBoard(boardId);
+    }
+
+    @Override
+    @Transactional
+    public List<BoardResForm> getBoard(HttpHeaders headers) {
+        User user = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
+        if (user == null) {
+            return null;
+        }
+
+        List<Board> boardList = forkRepository.findAllByUser(user);
+        List<BoardResForm> boardResFormList = boardList.stream().map((b) ->
+                BoardResForm.builder()
+                        .title(b.getTitle())
+                        .id(b.getId())
+                        .numReplys(b.getNumReply())
+                        .writer(new Writer(b.getWriter()))
+                        .createdDate(b.getCreatedDate())
+                        .location(new LocationResForm(b.getLocation()))
+                        .build()
+        ).toList();
+        return boardResFormList;
     }
 }
