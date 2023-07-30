@@ -40,7 +40,7 @@ jobs:
         
       - name: make properties files
         run: |
-          mkdir src/main/resources
+          
           echo "${{ secrets.OAUTH_PROPERTIES }}" > ./src/main/resources/auth.properties
           echo "${{ secrets.SERVER_PROPERTIES }}" > ./src/main/resources/application.properties
           echo "${{ secrets.SSL_KEY }}"|base64 --decode > ./src/main/resources/keystore.p12
