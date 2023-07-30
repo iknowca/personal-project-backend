@@ -26,18 +26,19 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
     final UserService userService;
     final BoardRepository boardRepository;
     final BoardContentRepository boardContentRepository;
     final ImgPathRepository imgPathRepository;
     final LocationService locationService;
     final ForkRepository forkRepository;
+
     @Override
     @Transactional
     public Long write(BoardReqForm reqForm) {
         User writer = userService.findByUserToken(reqForm.getUserToken());
-        if(writer==null) {
+        if (writer == null) {
             return null;
         }
         List<ImgPath> imgPathList = new ArrayList<>(reqForm.getFiles().stream().map(ImgPath::new).map(imgPathRepository::save).toList());
@@ -57,7 +58,7 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public BoardResForm requestBoard(Long boardId) {
         Optional<Board> maybeBoard = boardRepository.findBoardByIdWithContent(boardId);
-        if(maybeBoard.isEmpty()) {
+        if (maybeBoard.isEmpty()) {
             return null;
         }
         Board savedBoard = maybeBoard.get();
@@ -73,17 +74,18 @@ public class BoardServiceImpl implements BoardService{
                 .numReplys(savedBoard.getNumReply())
                 .location(new LocationResForm(savedBoard.getLocation()))
                 .forkUserList(new ForkResForm(boardId, forkRepository.findAllByBoard(savedBoard).stream()
-                        .map((f)->f.getUser().getId()).toList()))
+                        .map((f) -> f.getUser().getId()).toList()))
                 .build();
     }
-//  @Override
+
+    //  @Override
 //    public List<Board> requestBoardList() {
 //        List<Board> boardList = boardRepository.findAllWithWriter();
 //        return boardList;
 //    }
     @Override
     public List<BoardResForm> requestBoardList() {
-        List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter().stream().map((b)->
+        List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter().stream().map((b) ->
                 BoardResForm.builder()
                         .writer(new Writer(b.getWriter()))
                         .createdDate(b.getCreatedDate())
@@ -93,10 +95,11 @@ public class BoardServiceImpl implements BoardService{
         ).toList();
         return boardResFormList;
     }
+
     @Override
     public List<BoardResForm> requestBoardList(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter(pageable).stream().map((b)->
+        List<BoardResForm> boardResFormList = boardRepository.findAllWithWriter(pageable).stream().map((b) ->
                 BoardResForm.builder()
                         .writer(new Writer(b.getWriter()))
                         .createdDate(b.getCreatedDate())
@@ -112,11 +115,11 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public Long modify(BoardReqForm reqForm) {
         User writer = userService.findByUserToken(reqForm.getUserToken());
-        if(writer==null) {
+        if (writer == null) {
             return null;
         }
         Optional<Board> maybeBoard = boardRepository.findById(reqForm.getBoardId());
-        if(maybeBoard.isEmpty()) {
+        if (maybeBoard.isEmpty()) {
             return null;
         }
         Board savedBoard = maybeBoard.get();
@@ -139,20 +142,20 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public Boolean delete(Long boardId, HttpHeaders headers) {
         User writer = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
-        if(writer==null) {
+        if (writer == null) {
             return null;
         }
         Optional<Board> maybeBoard = boardRepository.findById(boardId);
-        if(maybeBoard.isEmpty()) {
+        if (maybeBoard.isEmpty()) {
             return null;
         }
         Board savedBoard = maybeBoard.get();
-        if(!Objects.equals(savedBoard.getWriter().getId(), writer.getId())) {
+        if (!Objects.equals(savedBoard.getWriter().getId(), writer.getId())) {
             return null;
         }
 
         List<ImgPath> imgPathList = savedBoard.getContent().getImgPathList();
-        if(savedBoard.getContent().getImgPathList().size()!=0) {
+        if (savedBoard.getContent().getImgPathList().size() != 0) {
             imgPathRepository.deleteAll(imgPathList);
         }
         boardContentRepository.delete(savedBoard.getContent());
@@ -163,7 +166,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<BoardResForm> requestBoardListByAccountId(Long accountId) {
-        List<BoardResForm> boardList = boardRepository.findAllByAccountId(accountId).stream().map((b)->
+        List<BoardResForm> boardList = boardRepository.findAllByAccountId(accountId).stream().map((b) ->
                 BoardResForm.builder()
                         .writer(new Writer(b.getWriter()))
                         .createdDate(b.getCreatedDate())
@@ -178,11 +181,10 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public List<BoardResForm> requestBoardListByLocation(Map<String, String> location, HttpHeaders headers) {
         User user = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
-        if(user==null) {
+        if (user == null) {
             return null;
         }
-        System.out.println(locationService.getBoardByLocation(location));
-        List<BoardResForm> boardList = locationService.getBoardByLocation(location).stream().map((b)->
+        List<BoardResForm> boardList = locationService.getBoardByLocation(location).stream().map((b) ->
                 BoardResForm.builder()
                         .title(b.getTitle())
                         .id(b.getId())
@@ -191,8 +193,29 @@ public class BoardServiceImpl implements BoardService{
                         .createdDate(b.getCreatedDate())
                         .location(new LocationResForm(b.getLocation()))
                         .build()
-                ).toList();
+        ).toList();
         log.info(boardList.toString());
         return boardList;
+    }
+
+    @Override
+    public List<BoardResForm> requestBoardListByFollow(HttpHeaders headers) {
+        User user = userService.findByUserToken(Objects.requireNonNull(headers.get("authorization")).get(0));
+        if (user == null) {
+            return null;
+        }
+
+
+        List<Board> boardList = boardRepository.findAllByFollow(user);
+        List<BoardResForm> boardResFormList = boardList.stream().map((b) -> BoardResForm.builder()
+                .title(b.getTitle())
+                .id(b.getId())
+                .numReplys(b.getNumReply())
+                .writer(new Writer(b.getWriter()))
+                .createdDate(b.getCreatedDate())
+                .location(new LocationResForm(b.getLocation()))
+                .build()
+        ).toList();
+        return boardResFormList;
     }
 }

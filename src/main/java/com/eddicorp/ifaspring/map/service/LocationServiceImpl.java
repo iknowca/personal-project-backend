@@ -22,7 +22,7 @@ public class LocationServiceImpl implements LocationService{
     final BoardRepository boardRepository;
     @Override
     public List<Board> getBoardByLocation(Map<String, String> locationMap) {
-        log.info("aaaaaa");
+        log.info(locationMap.toString());
         Location location = Location.builder()
                 .d_o(locationMap.get("d_o"))
                 .si(locationMap.get("si"))

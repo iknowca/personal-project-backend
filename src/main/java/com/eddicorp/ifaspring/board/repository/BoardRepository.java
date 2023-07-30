@@ -59,4 +59,13 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "left join fetch b.content.imgPathList " +
             "where b.forkUserList = :user")
     List<Board> findByFork(User user);
+
+    @Query("select b from Board b " +
+            "join fetch b.writer " +
+            "join fetch b.content " +
+            "join fetch b.location " + // Add this line to eagerly fetch the Location association
+            "where b.writer in " +
+            "(select followee from User followee where followee in " +
+            "(select f.followee from Follow f where f.follower = :follower))")
+    List<Board> findAllByFollow(User follower);
 }

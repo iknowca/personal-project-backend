@@ -38,6 +38,8 @@ public class Board {
     private Location location;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     private List<Fork> forkUserList;
+    @Formula("(select count(1) from fork f where f.board_id = id)")
+    private Integer numFork;
 
 
     @Builder

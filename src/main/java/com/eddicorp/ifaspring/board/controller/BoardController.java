@@ -62,4 +62,9 @@ public class BoardController {
         log.info("requestBoardListbyLocation()");
         return boardService.requestBoardListByLocation(location, headers);
     }
+    @GetMapping(value = "/follow/list")
+    public List<BoardResForm> requestBoardListByFollow(@RequestHeader HttpHeaders headers) {
+        log.info("requestBoardListByFollow()");
+        return boardService.requestBoardListByFollow(headers);
+    }
 }
